@@ -188,19 +188,17 @@ def pitch_svg(word, silent=False):
 def importnew():
     file = "D:/Ben/Downloads/cards.txt"
 
-    # select deck (did = deck id)
+    # Deck name:
     did = mw.col.decks.id("Japanese Vocab (Reading)")
     mw.col.decks.select(did)
-    # anki defaults to the last note type used in the selected deck
+
+    # Note type:
     m = mw.col.models.byName("Japanese Reading with Pitch")
     deck = mw.col.decks.get(did)
     deck['mid'] = m['id']
     mw.col.decks.save(deck)
-    # and puts cards in the last deck used by the note type
     m['did'] = did
     mw.col.models.save(m)
-    # showInfo(str(mw.col))
-    # import into the collection
 
     with open(file, 'r', encoding='utf-8') as f:
         card = f.readline()
@@ -217,23 +215,32 @@ def importnew():
             ti.importMode = 1
             ti.initMapping()
             ti.run()
-
             card = f.readline()
             count += 1
-    
+
         if count == 1:
             showInfo('1 card added')
         else:
             showInfo(str(count) + ' cards added')
 
 
-    # showInfo(str(dir(deck)))
-    # NOW: check all cards for empty pitch accent field, and fill in if so
-
-
 # create a new menu item, "test"
-action = QAction("Import cards.txt", mw)
-# set it to call testFunction when it's clicked
-action.triggered.connect(importnew)
-# and add it to the tools menu
-mw.form.menuTools.addAction(action)
+# action = QAction("Import cards.txt", mw)
+# # set it to call testFunction when it's clicked
+# action.triggered.connect(importnew)
+# # and add it to the tools menu
+# mw.form.menuTools.addAction(action)
+
+def add_action(submenu, label, callback, shortcut=None):
+    """Add action to menu"""
+    action = QAction(_(label), mw)
+    action.triggered.connect(callback)
+    if shortcut:
+        action.setShortcut(QKeySequence(shortcut))
+    submenu.addAction(action)
+
+def setup_menu():
+    mw.form.menuTools.addSeparator()
+    add_action(mw.form.menuTools, 'Import "cards.txt"', importnew, 'Ctrl+C')
+
+setup_menu()
