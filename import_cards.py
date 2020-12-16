@@ -1,5 +1,3 @@
-from .get_accent import *
-
 from aqt import mw
 from aqt.utils import showInfo
 from aqt.qt import *
@@ -28,8 +26,6 @@ def importnew():
             if card[-1:] == '\n':
                 card = card[:-1]
             card += '\t' + pitch_svg(card.split('\t')[1])
-            while card.count('  /  ') > 0:
-                card = card.replace('  /  ', '&nbsp; / &nbsp;')
             with open('temp.txt', 'w', encoding='utf-8') as temp:
                 temp.write(card)
             ti = TextImporter(mw.col, 'temp.txt')
