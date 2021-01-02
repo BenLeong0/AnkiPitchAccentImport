@@ -176,3 +176,6 @@ def pitch_svg(word, silent=False):
     svg += '</svg>'
 
     return svg
+
+# s = "てんの' う・すめらみ' こと"
+# print(pitch_svg(s))

@@ -60,6 +60,6 @@ def add_action(submenu, label, callback, shortcut=None):
 
 def setup_menu():
     mw.form.menuTools.addSeparator()
-    add_action(mw.form.menuTools, 'Import "cards.txt"', importnew, 'Ctrl+C')
+    add_action(mw.form.menuTools, 'Import "cards.txt"', importnew, 'Ctrl+Shift+C')
 
 setup_menu()
