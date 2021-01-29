@@ -31,4 +31,8 @@ The code reads the text file at the specified location, and adds the words one a
 
 # Credits
 
-This addon is an adapted version of the addon found [here](https://github.com/IllDepence/anki_add_pitch_plugin).
+This addon is an adapted version of the addon found [here](https://github.com/IllDepence/anki_add_pitch_plugin), to read my own pitch accent data rather than download from Wadoku.
+
+- I created this adaptation for two main reasons:
+  - Although extensive, Wadoku is by no means a complete source, especially with regards to uncommon, old or colloquial terms.
+  - Wadoku is not always reliable. As such, I cross-check my data with [Wadoku](https://www.wadoku.de/), Suzuki-kun ([sentence](http://www.gavo.t.u-tokyo.ac.jp/ojad/eng/phrasing/index) and [vocab](http://www.gavo.t.u-tokyo.ac.jp/ojad/)) and [Forvo](https://forvo.com/).
