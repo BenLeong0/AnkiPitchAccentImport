@@ -10,6 +10,7 @@ Change file location in `importnew()` to where new cards are copied to.
 # Encoding
 
 Pitch accent is encoded using `'` to denote a fall in pitch accent, and `*` to denote a rise in pitch accent.
+
 A `・` character can be inserted between readings to generate multiple diagrams.
 
 - Unless specified, it is assumed that the pitch accent rises after the first モラ.
