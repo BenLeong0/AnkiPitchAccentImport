@@ -1,11 +1,11 @@
 # AnkiPitchAccentImport
 
-Put in own folder in `Appdata/Roaming/Anki2/addons21`.
+Put the addon in its own folder in `Appdata/Roaming/Anki2/addons21`.
 
-Change file location in `importnew()` to where new cards are copied to.
+Change file location in `importnew()` to the text file where new cards are inserted.
 
-`Ctrl+Shift+C` runs addon.
-`importMode` set to `1`, so importing will not overwrite any duplicates.
+- `Ctrl+Shift+C` runs the addon.
+- `importMode` set to `1`, so importing will not overwrite any duplicates.
 
 # Encoding
 
@@ -28,6 +28,7 @@ The code reads the text file at the specified location, and adds the words one a
 - The text file should only include data for the first three fields, delimited by `\t`.
 - The addon will read extract the data from the pronunciation field and insert the SVG code into the pitch accent field.
   - There is very little error handling, although any amount of spaces can be added without interfering.
+  - In addition, any duplicates are skipped (`importMode = 1`).
 
 # Credits
 
