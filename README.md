@@ -16,7 +16,7 @@ A `・` character can be inserted between readings to generate multiple diagrams
 - Unless specified, it is assumed that the pitch accent rises after the first モラ.
 - To make it such that both of the first two モラ are high, one can insert `'*` between them.
   - This is useful when denoting the pitch accent of suffixes, for example.
-  - eg: `～側` -> `～'*がわ・～'*かわ` [ `HHH(H)` including the ～ (implying the relation to the stem) ].
+  - eg: `～側` -> `～'*がわ` [ `HHH(H)` including the ～, implying the relation to the stem ].
 
 The code reads the text file at the specified location, and adds the words one at a time to the specified deck.
 
