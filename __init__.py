@@ -47,6 +47,49 @@ def importnew():
             showInfo(str(count) + ' cards added')
 
 
+def importnewsentences():
+    file = "D:/Ben/Downloads/cards_sentences.txt"
+
+    # Deck name:
+    did = mw.col.decks.id("Japanese Vocab (Sentences)")
+    mw.col.decks.select(did)
+
+    # Note type:
+    m = mw.col.models.byName("Japanese Reading with Sentence and Pitch")
+    deck = mw.col.decks.get(did)
+    deck['mid'] = m['id']
+    mw.col.decks.save(deck)
+    m['did'] = did
+    mw.col.models.save(m)
+
+    with open(file, 'r', encoding='utf-8') as f:
+        card = f.readline()
+        count = 0
+        while card:
+            if card[-1:] == '\n':
+                card = card[:-1]
+            word, reading, definition, sentence_jp, sentence_en = card.split('\t')
+            suruless_word = word.replace("（する）", "")
+            pronunciation = pitch_svg(reading)
+            definition = definition.replace('  /  ', '&nbsp; / &nbsp;')
+            sentence_jp = sentence_jp.replace(suruless_word, f"<strong>{suruless_word}</strong>")
+            with open('temp.txt', 'w', encoding='utf-8') as temp:
+                temp.write('\t'.join([sentence_jp, sentence_en, word, reading, definition, pronunciation]))
+            ti = TextImporter(mw.col, 'temp.txt')
+            ti.delimiter = "\t"
+            ti.allowHTML = True
+            ti.importMode = 1
+            ti.initMapping()
+            ti.run()
+            card = f.readline()
+            count += 1
+
+        if count == 1:
+            showInfo('1 card added')
+        else:
+            showInfo(str(count) + ' cards added')
+
+
 # create a new menu item, "test"
 # action = QAction("Import cards.txt", mw)
 # # set it to call testFunction when it's clicked
@@ -65,5 +108,6 @@ def add_action(submenu, label, callback, shortcut=None):
 def setup_menu():
     mw.form.menuTools.addSeparator()
     add_action(mw.form.menuTools, 'Import "cards.txt"', importnew, 'Ctrl+Shift+C')
+    add_action(mw.form.menuTools, 'Import "cards_sentences.txt"', importnewsentences, 'Ctrl+Shift+D')
 
 setup_menu()
