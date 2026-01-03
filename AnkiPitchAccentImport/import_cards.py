@@ -5,15 +5,17 @@ from aqt.utils import showInfo
 from anki.collection import Collection
 from anki.importing import TextImporter
 
+VOCAB_CARDS_INPUT_FILENAME = "/Users/benleong/Downloads/cards.txt"
+SENTENCE_CARDS_INPUT_FILENAME = "/Users/benleong/Downloads/cards_sentences.txt"
+
 
 def importnew():
-    input_filename = "/Users/benleong/Downloads/cards.txt"
     collection = _get_collection(
         deck_name="Japanese Vocab::Japanese Vocab (Reading)",
         model_name="Japanese Reading with Pitch",
     )
 
-    with open(input_filename, "r", encoding="utf-8") as f:
+    with open(VOCAB_CARDS_INPUT_FILENAME, "r", encoding="utf-8") as f:
         cards = [s.strip().replace("  /  ", "&nbsp; / &nbsp;") for s in f.readlines()]
         cards_with_pitch = [
             card + "\t" + pitch_svg(card.split("\t")[1]) for card in cards
@@ -27,13 +29,12 @@ def importnew():
 
 
 def importnewsentences():
-    input_filename = "/Users/benleong/Downloads/cards_sentences.txt"
     collection = _get_collection(
         deck_name="Japanese Vocab::Japanese Vocab (Sentences)",
         model_name="Japanese Reading with Sentence and Pitch",
     )
 
-    with open(input_filename, "r", encoding="utf-8") as f:
+    with open(SENTENCE_CARDS_INPUT_FILENAME, "r", encoding="utf-8") as f:
         cards = [s.strip() for s in f.readlines()]
         split_cards = [card.split("\t") for card in cards]
 
