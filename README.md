@@ -1,6 +1,6 @@
 # AnkiPitchAccentImport
 
-Put the addon in its own folder in `Appdata/Roaming/Anki2/addons21`.
+Put the addon in its own folder in Anki's `/addons21` directory.
 
 Change the input files in `import_cards.py` to the text files where new cards are inserted.
 
