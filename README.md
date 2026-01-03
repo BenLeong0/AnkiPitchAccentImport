@@ -1,4 +1,4 @@
-# AnkiPitchAccentImport
+# Anki Pitch Accent Import Add-on
 
 Put the addon in its own folder in Anki's `/addons21` directory.
 
