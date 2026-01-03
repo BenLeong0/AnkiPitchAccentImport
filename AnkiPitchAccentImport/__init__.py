@@ -1,3 +1,3 @@
-from AnkiPitchAccentImport.import_cards import importnew, importnewsentences
+from AnkiPitchAccentImport.main import set_up_menu
 
-__all__ = ["importnew", "importnewsentences"]
+set_up_menu()
