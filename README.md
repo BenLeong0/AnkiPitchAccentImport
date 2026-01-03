@@ -2,10 +2,10 @@
 
 Put the addon in its own folder in `Appdata/Roaming/Anki2/addons21`.
 
-Change file location in `importnew()` to the text file where new cards are inserted.
+Change the input files in `import_cards.py` to the text files where new cards are inserted.
 
-- `Ctrl+Shift+C` runs the addon.
-- `importMode` set to `1`, so importing will not overwrite any duplicates.
+- `Cmd+Shift+C` runs the addon for vocab cards, and `Cmd+Shift+D` for sentence cards.
+- `importMode` is set to `1`, so importing will not overwrite any duplicates.
 
 # Encoding
 
@@ -16,19 +16,23 @@ A `・` character can be inserted between readings to generate multiple diagrams
 - Unless specified, it is assumed that the pitch accent rises after the first モラ.
 - To make it such that both of the first two モラ are high, one can insert `'*` between them.
   - This is useful when denoting the pitch accent of suffixes, for example.
-  - eg: `～側` -> `～'*がわ` [ `HHH(H)` including the ～, implying the relation to the stem ].
+  - eg: `～側` → `～'*がわ` (this results in a `HHH(H)` pattern **including** the ～, implying the relation to the stem).
 
-The code reads the text file at the specified location, and adds the words one at a time to the specified deck.
+The code reads the text file at the specified location, and adds each the words to ~~the specified deck~~ a deck 🫩.
+
+- The cards may be added to a random deck, and in this case must be manually transferred.
 
 - The expected card setup has fields:
   - Vocab
   - Pronunciation
   - Meaning
+  - Japanese sentence (for sentence cards only)
+  - English sentence (for sentence cards only)
   - Pitch accent
-- The text file should only include data for the first three fields, delimited by `\t`.
+- The text file should include data for all fields excluding pitch accent, delimited by `\t`.
 - The addon will read extract the data from the pronunciation field and insert the SVG code into the pitch accent field.
-  - There is very little error handling, although any amount of spaces can be added without interfering.
-  - In addition, any duplicates are skipped (`importMode = 1`).
+  - Spaces in the pronunciation are all ignored.
+  - Any duplicates are skipped (since `importMode=1`).
 
 # Credits
 
