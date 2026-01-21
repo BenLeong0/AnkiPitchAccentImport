@@ -25,7 +25,7 @@ def importnew():
 
         num_cards = len(cards)
         counter = "card" if num_cards == 1 else "cards"
-        showInfo(f"{num_cards} {counter} added")
+        showInfo(f"{num_cards} {counter} added (this may be to the wrong deck)")
 
 
 def importnewsentences():
@@ -59,7 +59,7 @@ def importnewsentences():
 
         num_cards = len(cards)
         counter = "card" if num_cards == 1 else "cards"
-        showInfo(f"{num_cards} {counter} added")
+        showInfo(f"{num_cards} {counter} added (this may be to the wrong deck)")
 
 
 def _get_collection(*, deck_name: str, model_name: str) -> Collection:
