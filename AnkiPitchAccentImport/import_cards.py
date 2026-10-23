@@ -2,15 +2,16 @@ from AnkiPitchAccentImport.get_accent import pitch_svg
 
 from aqt import mw
 from aqt.utils import showInfo
-from anki.collection import Collection
-from anki.importing import TextImporter
+from anki.decks import DeckId
+from anki.models import NotetypeDict
+from anki.notes import NoteFieldsCheckResult
 
 VOCAB_CARDS_INPUT_FILENAME = "/Users/benleong/Downloads/cards.txt"
 SENTENCE_CARDS_INPUT_FILENAME = "/Users/benleong/Downloads/cards_sentences.txt"
 
 
 def importnew():
-    collection = _get_collection(
+    deck_id, model = _get_deck_and_model(
         deck_name="Japanese Vocab::Japanese Vocab (Reading)",
         model_name="Japanese Reading with Pitch",
     )
@@ -21,15 +22,11 @@ def importnew():
             card + "\t" + pitch_svg(card.split("\t")[1]) for card in cards
         ]
 
-        _import_cards(collection, cards_with_pitch)
-
-        num_cards = len(cards)
-        counter = "card" if num_cards == 1 else "cards"
-        showInfo(f"{num_cards} {counter} added (this may be to the wrong deck)")
+        _import_cards(deck_id, model, cards_with_pitch)
 
 
 def importnewsentences():
-    collection = _get_collection(
+    deck_id, model = _get_deck_and_model(
         deck_name="Japanese Vocab::Japanese Vocab (Sentences)",
         model_name="Japanese Reading with Sentence and Pitch",
     )
@@ -55,39 +52,45 @@ def importnewsentences():
             for word, reading, definition, sentence_jp, sentence_en in split_cards
         ]
 
-        _import_cards(collection, cards_with_pitch)
-
-        num_cards = len(cards)
-        counter = "card" if num_cards == 1 else "cards"
-        showInfo(f"{num_cards} {counter} added (this may be to the wrong deck)")
+        _import_cards(deck_id, model, cards_with_pitch)
 
 
-def _get_collection(*, deck_name: str, model_name: str) -> Collection:
-    mw_col = mw.col
-    assert mw_col is not None
+def _get_deck_and_model(
+    *, deck_name: str, model_name: str
+) -> tuple[DeckId, NotetypeDict]:
+    col = mw.col
+    assert col is not None
 
-    deck = mw_col.decks.by_name(deck_name)
-    m = mw_col.models.by_name(model_name)
-    assert m and deck
+    deck_id = col.decks.id_for_name(deck_name)
+    model = col.models.by_name(model_name)
+    assert model and deck_id
 
-    deck["mid"] = m["id"]
-    m["did"] = deck["id"]
-
-    mw_col.decks.select(deck["id"])
-    mw_col.decks.save(deck)
-    mw_col.models.save(m)
-
-    return mw_col
+    return deck_id, model
 
 
-def _import_cards(collection: Collection, cards: list[str]):
-    tmp_filename = "/tmp/cards.txt"
-    with open(tmp_filename, "w", encoding="utf-8") as temp:
-        temp.writelines("\n".join(cards) + "\n")
+def _import_cards(deck_id: DeckId, model: NotetypeDict, cards: list[str]):
+    """Add one note per tab-separated line, skipping duplicates of the first field."""
+    col = mw.col
+    assert col is not None
 
-    ti = TextImporter(collection, tmp_filename)
-    ti.delimiter = "\t"
-    ti.allowHTML = True
-    ti.importMode = 1
-    ti.initMapping()
-    ti.run()
+    num_added = 0
+    num_duplicates = 0
+    for card in cards:
+        note = col.new_note(model)
+        for i, value in enumerate(card.split("\t")[: len(note.fields)]):
+            note.fields[i] = value
+
+        if note.fields_check() == NoteFieldsCheckResult.DUPLICATE:
+            num_duplicates += 1
+            continue
+
+        col.add_note(note, deck_id)
+        num_added += 1
+
+    mw.reset()
+
+    counter = "card" if num_added == 1 else "cards"
+    message = f"{num_added} {counter} added"
+    if num_duplicates:
+        message += f" ({num_duplicates} duplicates skipped)"
+    showInfo(message)
